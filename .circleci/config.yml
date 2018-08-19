@@ -11,8 +11,21 @@ jobs:
           name: Login to Docker Hub
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
-          name: Build Docker Image
-          command: docker build . -f ./Dockerfile -t georgevella/build-aspnetcore-node
+          name: Build Docker Image for 'aspnetcore-build'
+          command: docker build . -f ./aspnetcore-build/2.0/Dockerfile -t georgevella/build-aspnetcore-node:2.0.9-sdk-2.1.202-node8
       - run:
-          name: Push Docker Image
-          command: docker push georgevella/build-aspnetcore-node
+          name: Build Docker Image for 'dotnet:2.1-sdk'
+          command: docker build . -f ./dotnet/2.1-sdk/Dockerfile -t georgevella/dotnet:2.1.400-sdk-node8
+      - run:
+          name: Build Docker Image for 'dotnet:2.1-aspnetcore-runtime'
+          command: docker build . -f ./dotnet/2.1-aspnetcore/Dockerfile -t georgevella/dotnet:2.1.2-aspnetcore-runtime-node8
+      - run:
+          name: Push Docker Image for 'aspnetcore-build'
+          command: docker push georgevella/build-aspnetcore-node:2.0.9-sdk-2.1.202-node8
+      - run:
+          name: Push Docker Image for 'dotnet:2.1-sdk'
+          command: docker push georgevella/dotnet:2.1.400-sdk-node8     
+      - run:
+          name: Push Docker Image for 'dotnet:2.1-aspnetcore-runtime'
+          command: docker push georgevella/dotnet:2.1.2-aspnetcore-runtime-node8    
+      
